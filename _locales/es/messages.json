@@ -1,0 +1,105 @@
+{
+  "extName": {
+    "message": "Discord Translate — traducir mensajes",
+    "description": "Nombre de la extensión en Chrome."
+  },
+  "extDescription": {
+    "message": "Traduce mensajes de Discord con Google Translate (sin API key): botón en el menú contextual y modo automático. Muestra la traducción debajo del original o reemplazándolo."
+  },
+  "actionTitle": {
+    "message": "Discord Translate"
+  },
+  "popupSubtitle": {
+    "message": "Google Translate · gratis, sin API key"
+  },
+  "optionEnabled": {
+    "message": "Extensión activada"
+  },
+  "optionEnabledHint": {
+    "message": "Botón en el menú de clic derecho"
+  },
+  "optionAuto": {
+    "message": "Traducción automática"
+  },
+  "optionAutoHint": {
+    "message": "Traduce los mensajes al aparecer"
+  },
+  "labelTargetLang": {
+    "message": "Idioma de destino"
+  },
+  "modeBelow": {
+    "message": "Debajo del original"
+  },
+  "modeBelowHint": {
+    "message": "Se ven los dos textos"
+  },
+  "modeReplace": {
+    "message": "Reemplazando el original"
+  },
+  "modeReplaceHint": {
+    "message": "Pasá el mouse para ver el texto original"
+  },
+  "tabAuto": {
+    "message": "Automática"
+  },
+  "tabManual": {
+    "message": "Desde el menú"
+  },
+  "manualHint": {
+    "message": "Se aplica al pulsar «Traducir mensaje» en el menú de clic derecho."
+  },
+  "labelAutoDisplay": {
+    "message": "Cómo se muestran"
+  },
+  "labelManualDisplay": {
+    "message": "Cómo se muestran"
+  },
+  "sectionActions": {
+    "message": "En esta pestaña"
+  },
+  "actionUndo": {
+    "message": "Deshacer traducciones"
+  },
+  "statusUndone": {
+    "message": "Traducciones eliminadas."
+  },
+  "actionTranslateVisible": {
+    "message": "Traducir todos los mensajes visibles"
+  },
+  "footerReload": {
+    "message": "Si no ves cambios, recargá la pestaña de Discord (F5)."
+  },
+  "statusNoDiscord": {
+    "message": "Abrí Discord en esta pestaña."
+  },
+  "statusReloadDiscord": {
+    "message": "No se pudo contactar Discord. Recargá la pestaña (F5)."
+  },
+  "statusTranslatingVisible": {
+    "message": "Traduciendo los mensajes visibles…"
+  },
+  "menuTranslate": {
+    "message": "Traducir mensaje"
+  },
+  "stateTranslating": {
+    "message": "Traduciendo…"
+  },
+  "errorNoText": {
+    "message": "No hay texto que traducir en este mensaje."
+  },
+  "errorTranslateFailed": {
+    "message": "No se pudo traducir."
+  },
+  "errorRateLimited": {
+    "message": "Google Translate limitó las peticiones. Esperá unos segundos."
+  },
+  "errorNetwork": {
+    "message": "No se pudo conectar con Google Translate."
+  },
+  "errorUnknown": {
+    "message": "Error desconocido al traducir."
+  },
+  "errorEmptyResponse": {
+    "message": "Google Translate devolvió una respuesta vacía."
+  }
+}

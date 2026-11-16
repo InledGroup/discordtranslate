@@ -1,0 +1,105 @@
+{
+  "extName": {
+    "message": "Discord Translate — message translator",
+    "description": "Extension name shown in Chrome."
+  },
+  "extDescription": {
+    "message": "Translate Discord messages with Google Translate (no API key): right-click menu button and automatic mode. Shows the translation below the original or replacing it."
+  },
+  "actionTitle": {
+    "message": "Discord Translate"
+  },
+  "popupSubtitle": {
+    "message": "Google Translate · free, no API key"
+  },
+  "optionEnabled": {
+    "message": "Extension enabled"
+  },
+  "optionEnabledHint": {
+    "message": "Right-click menu button on messages"
+  },
+  "optionAuto": {
+    "message": "Automatic translation"
+  },
+  "optionAutoHint": {
+    "message": "Translates messages as they appear"
+  },
+  "labelTargetLang": {
+    "message": "Target language"
+  },
+  "modeBelow": {
+    "message": "Below the original"
+  },
+  "modeBelowHint": {
+    "message": "Both texts stay visible"
+  },
+  "modeReplace": {
+    "message": "Replacing the original"
+  },
+  "modeReplaceHint": {
+    "message": "Hover to see the original text"
+  },
+  "tabAuto": {
+    "message": "Automatic"
+  },
+  "tabManual": {
+    "message": "From the menu"
+  },
+  "manualHint": {
+    "message": "Applies when you click “Translate message” in the right-click menu."
+  },
+  "labelAutoDisplay": {
+    "message": "How they are shown"
+  },
+  "labelManualDisplay": {
+    "message": "How they are shown"
+  },
+  "sectionActions": {
+    "message": "In this tab"
+  },
+  "actionUndo": {
+    "message": "Undo translations"
+  },
+  "statusUndone": {
+    "message": "Translations removed."
+  },
+  "actionTranslateVisible": {
+    "message": "Traducir todos los mensajes visibles"
+  },
+  "footerReload": {
+    "message": "If nothing changes, reload the Discord tab (F5)."
+  },
+  "statusNoDiscord": {
+    "message": "Open Discord in this tab."
+  },
+  "statusReloadDiscord": {
+    "message": "Could not reach Discord. Reload the tab (F5)."
+  },
+  "statusTranslatingVisible": {
+    "message": "Translating visible messages…"
+  },
+  "menuTranslate": {
+    "message": "Translate message"
+  },
+  "stateTranslating": {
+    "message": "Translating…"
+  },
+  "errorNoText": {
+    "message": "This message has no text to translate."
+  },
+  "errorTranslateFailed": {
+    "message": "Could not translate."
+  },
+  "errorRateLimited": {
+    "message": "Google Translate rate-limited the requests. Wait a few seconds."
+  },
+  "errorNetwork": {
+    "message": "Could not connect to Google Translate."
+  },
+  "errorUnknown": {
+    "message": "Unknown error while translating."
+  },
+  "errorEmptyResponse": {
+    "message": "Google Translate returned an empty response."
+  }
+}

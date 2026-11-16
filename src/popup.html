@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Discord Translate</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <img class="logo" src="../icons/icon48.png" alt="" width="34" height="34" />
+      <div>
+        <h1 data-i18n="actionTitle">Discord Translate</h1>
+        <p class="subtitle" data-i18n="popupSubtitle">Google Translate · gratis, sin API key</p>
+      </div>
+    </header>
+
+    <main class="body">
+      <label class="row row--switch">
+        <span>
+          <span class="row__title" data-i18n="optionEnabled">Extensión activada</span>
+          <span class="row__hint" data-i18n="optionEnabledHint">Botón en el menú de clic derecho</span>
+        </span>
+        <input type="checkbox" id="enabled" class="switch" />
+      </label>
+
+      <label class="row row--stack">
+        <span class="row__title" data-i18n="labelTargetLang">Idioma de destino</span>
+        <select id="targetLang" class="select"></select>
+      </label>
+
+      <div class="tabs" role="tablist">
+        <button
+          type="button"
+          class="tab is-active"
+          id="tab-auto"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-auto"
+          data-panel="auto"
+          data-i18n="tabAuto"
+        >
+          Automática
+        </button>
+        <button
+          type="button"
+          class="tab"
+          id="tab-manual"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-manual"
+          data-panel="manual"
+          data-i18n="tabManual"
+        >
+          Desde el menú
+        </button>
+      </div>
+
+      <section id="panel-auto" class="panel" role="tabpanel" aria-labelledby="tab-auto">
+        <label class="row row--switch row--plain">
+          <span>
+            <span class="row__title" data-i18n="optionAuto">Traducción automática</span>
+            <span class="row__hint" data-i18n="optionAutoHint">Traduce los mensajes al aparecer</span>
+          </span>
+          <input type="checkbox" id="autoTranslate" class="switch" />
+        </label>
+
+        <fieldset class="group">
+          <legend class="group__title" data-i18n="labelAutoDisplay">Cómo se muestran</legend>
+          <label class="option">
+            <input type="radio" name="autoDisplayMode" value="below" />
+            <span>
+              <span class="row__title" data-i18n="modeBelow">Debajo del original</span>
+              <span class="row__hint" data-i18n="modeBelowHint">Se ven los dos textos</span>
+            </span>
+          </label>
+          <label class="option">
+            <input type="radio" name="autoDisplayMode" value="replace" />
+            <span>
+              <span class="row__title" data-i18n="modeReplace">Reemplazando el original</span>
+              <span class="row__hint" data-i18n="modeReplaceHint">Pasá el mouse para ver el texto original</span>
+            </span>
+          </label>
+        </fieldset>
+      </section>
+
+      <section id="panel-manual" class="panel" role="tabpanel" aria-labelledby="tab-manual" hidden>
+        <p class="panel__hint" data-i18n="manualHint">
+          Al pulsar «Traducir mensaje» en el menú de clic derecho.
+        </p>
+
+        <fieldset class="group">
+          <legend class="group__title" data-i18n="labelManualDisplay">Cómo se muestran</legend>
+          <label class="option">
+            <input type="radio" name="manualDisplayMode" value="below" />
+            <span>
+              <span class="row__title" data-i18n="modeBelow">Debajo del original</span>
+              <span class="row__hint" data-i18n="modeBelowHint">Se ven los dos textos</span>
+            </span>
+          </label>
+          <label class="option">
+            <input type="radio" name="manualDisplayMode" value="replace" />
+            <span>
+              <span class="row__title" data-i18n="modeReplace">Reemplazando el original</span>
+              <span class="row__hint" data-i18n="modeReplaceHint">Pasá el mouse para ver el texto original</span>
+            </span>
+          </label>
+        </fieldset>
+      </section>
+
+      <section class="actions">
+        <h2 class="group__title" data-i18n="sectionActions">En esta pestaña</h2>
+        <button id="translateVisible" class="button" type="button" data-i18n="actionTranslateVisible">
+          Traducir todos los mensajes visibles
+        </button>
+        <button id="undo" class="button button--secondary" type="button" data-i18n="actionUndo">
+          Deshacer traducciones
+        </button>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer class="footer" data-i18n="footerReload">
+      Si no ves cambios, recargá la pestaña de Discord (F5).
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

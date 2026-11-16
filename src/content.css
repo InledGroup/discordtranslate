@@ -1,0 +1,120 @@
+/* Estilos de la traducción. Usan las variables de tema de Discord para que se
+   vea nativa en modo claro, oscuro y temas de terceros. */
+
+.dgx-tr {
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.375rem;
+  color: var(--text-normal, #dbdee1);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  position: relative;
+}
+
+.dgx-tr__text {
+  color: inherit;
+}
+
+.dgx-tr--below {
+  padding: 2px 0 2px 8px;
+  border-left: 2px solid var(--brand-500, #5865f2);
+  animation: dgx-fade-in 140ms ease-out;
+}
+
+.dgx-tr--replace {
+  margin-top: 0;
+  cursor: help;
+  animation: dgx-fade-in 140ms ease-out;
+}
+
+.dgx-tr__label {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 4px;
+  border: 1px solid var(--background-modifier-accent, rgba(255, 255, 255, 0.12));
+  border-radius: 3px;
+  color: var(--text-muted, #949ba4);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 14px;
+  vertical-align: 1px;
+  user-select: none;
+}
+
+.dgx-tr--loading {
+  color: var(--text-muted, #949ba4);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.dgx-tr--error {
+  color: var(--text-danger, #fa777c);
+  font-size: 0.875rem;
+}
+
+.dgx-orig-hidden {
+  display: none !important;
+}
+
+/* Ítem inyectado en el menú contextual de Discord.
+   Lo normal es que herede las clases nativas del menú (data-dgx-native); lo de
+   abajo es solo el respaldo por si Discord cambia esas clases. */
+
+.dgx-menu-item {
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dgx-menu-item:not([data-dgx-native]) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1px 4px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  color: var(--interactive-normal, #b5bac1);
+  font-family: var(--font-primary, "gg sans", "Noto Sans", sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.dgx-menu-item:not([data-dgx-native]):hover,
+.dgx-menu-item:not([data-dgx-native]):focus-visible {
+  background: var(--background-modifier-hover, rgba(78, 80, 88, 0.3));
+  color: var(--interactive-hover, #fff);
+  outline: none;
+}
+
+.dgx-menu-item svg {
+  flex: 0 0 auto;
+}
+
+/* Solo el respaldo necesita tamaño propio: el ítem nativo ya trae el suyo. */
+.dgx-menu-item:not([data-dgx-native]) svg {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}
+
+@keyframes dgx-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dgx-tr--below,
+  .dgx-tr--replace {
+    animation: none;
+  }
+}
