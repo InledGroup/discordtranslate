@@ -37,7 +37,7 @@
     "message": "Reemplazando el original"
   },
   "modeReplaceHint": {
-    "message": "Pasá el mouse para ver el texto original"
+    "message": "Pasa el cursor para ver el texto original"
   },
   "tabAuto": {
     "message": "Automática"
@@ -67,13 +67,13 @@
     "message": "Traducir todos los mensajes visibles"
   },
   "footerReload": {
-    "message": "Si no ves cambios, recargá la pestaña de Discord (F5)."
+    "message": "Si no ves cambios, recarga la pestaña de Discord (F5)."
   },
   "statusNoDiscord": {
-    "message": "Abrí Discord en esta pestaña."
+    "message": "Abre Discord en esta pestaña."
   },
   "statusReloadDiscord": {
-    "message": "No se pudo contactar Discord. Recargá la pestaña (F5)."
+    "message": "No se pudo contactar con Discord. Recarga la pestaña (F5)."
   },
   "statusTranslatingVisible": {
     "message": "Traduciendo los mensajes visibles…"
@@ -91,7 +91,7 @@
     "message": "No se pudo traducir."
   },
   "errorRateLimited": {
-    "message": "Google Translate limitó las peticiones. Esperá unos segundos."
+    "message": "Google Translate ha limitado las peticiones. Espera unos segundos."
   },
   "errorNetwork": {
     "message": "No se pudo conectar con Google Translate."
@@ -101,5 +101,8 @@
   },
   "errorEmptyResponse": {
     "message": "Google Translate devolvió una respuesta vacía."
+  },
+  "errorHttp": {
+    "message": "Google Translate devolvió un error."
   }
 }

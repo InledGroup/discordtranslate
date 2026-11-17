@@ -63,6 +63,11 @@ const LANGUAGES = [
   'sl',
 ];
 
+// Último estado conocido de los ajustes. Se conserva al guardar un cambio
+// parcial: si no, tocar el interruptor del automático repintaba los demás
+// ajustes con los valores por defecto.
+let current = { ...DEFAULTS };
+
 const els = {
   enabled: document.getElementById('enabled'),
   autoTranslate: document.getElementById('autoTranslate'),
@@ -91,7 +96,8 @@ applyI18n();
 fillLanguages();
 
 chrome.storage.sync.get({ ...DEFAULTS, activePanel: 'auto' }, (stored) => {
-  paint({ ...DEFAULTS, ...migrate(stored) });
+  current = { ...DEFAULTS, ...migrate(stored) };
+  paint(current);
   showPanel(PANELS.includes(stored.activePanel) ? stored.activePanel : 'auto', false);
 });
 
@@ -101,7 +107,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
   for (const key of Object.keys(DEFAULTS)) {
     if (key in changes) patch[key] = changes[key].newValue;
   }
-  if (Object.keys(patch).length) paint({ ...DEFAULTS, ...migrate({ ...patch }) });
+  if (!Object.keys(patch).length) return;
+  current = { ...current, ...migrate({ ...patch }) };
+  paint(current);
 });
 
 function applyI18n() {
@@ -209,12 +217,12 @@ els.undo.addEventListener('click', () => {
 function sendToDiscord(type, successKey) {
   chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     if (!tab || !tab.id) {
-      setStatus(t('statusNoDiscord', 'Abrí Discord en esta pestaña.'));
+      setStatus(t('statusNoDiscord', 'Open Discord in this tab.'));
       return;
     }
     chrome.tabs.sendMessage(tab.id, { type }, () => {
       if (chrome.runtime.lastError) {
-        setStatus(t('statusReloadDiscord', 'No se pudo contactar Discord. Recargá la pestaña (F5).'));
+        setStatus(t('statusReloadDiscord', 'Could not reach Discord. Reload the tab (F5).'));
         return;
       }
       setStatus(t(successKey, ''));

@@ -84,11 +84,12 @@
     const next = { ...DEFAULTS, ...source };
     next.enabled = !!next.enabled;
     next.autoTranslate = !!next.autoTranslate;
-    // Versiones anteriores tenían un único `displayMode`: lo usamos como
-    // valor inicial de los dos ajustes nuevos.
-    const legacy = next.displayMode === 'replace' ? 'replace' : 'below';
-    next.autoDisplayMode = (next.autoDisplayMode || legacy) === 'replace' ? 'replace' : 'below';
-    next.manualDisplayMode = (next.manualDisplayMode || legacy) === 'replace' ? 'replace' : 'below';
+    // Versiones anteriores tenían un único `displayMode`: lo usamos como valor
+    // inicial de los dos ajustes nuevos, pero solo si no existen todavía (si no,
+    // los valores por defecto ya los taparían).
+    const legacy = source && source.displayMode === 'replace' ? 'replace' : 'below';
+    next.autoDisplayMode = (source.autoDisplayMode ?? legacy) === 'replace' ? 'replace' : 'below';
+    next.manualDisplayMode = (source.manualDisplayMode ?? legacy) === 'replace' ? 'replace' : 'below';
     delete next.displayMode;
     next.targetLang = /^[a-zA-Z]{2}(-[a-zA-Z]{2,4})?$/.test(String(next.targetLang))
       ? String(next.targetLang)
@@ -219,7 +220,7 @@
   }
 
   function buildTranslateItem(sample) {
-    const text = t('menuTranslate', 'Traducir mensaje');
+    const text = t('menuTranslate', 'Translate message');
     const item = sample ? sample.cloneNode(true) : document.createElement('div');
 
     item.removeAttribute('id');
@@ -455,7 +456,7 @@
 
     const text = extractText(contentEl);
     if (!text) {
-      if (manual) renderError(contentEl, t('errorNoText', 'No hay texto que traducir en este mensaje.'));
+      if (manual) renderError(contentEl, t('errorNoText', 'This message has no text to translate.'));
       return;
     }
 
@@ -481,7 +482,7 @@
       try {
         entry = await job;
       } catch (error) {
-        if (manual) renderError(contentEl, error.message || t('errorTranslateFailed', 'No se pudo traducir.'));
+        if (manual) renderError(contentEl, error.message || t('errorTranslateFailed', 'Could not translate.'));
         return;
       } finally {
         inflight.delete(cacheKey);
@@ -509,7 +510,7 @@
           const lastError = chrome.runtime.lastError;
           if (lastError) return reject(new Error(lastError.message));
           if (!response || !response.ok) {
-            return reject(new Error((response && response.error) || 'No se pudo traducir.'));
+            return reject(new Error((response && response.error) || t('errorTranslateFailed', 'Could not translate.')));
           }
           resolve({ translation: response.translation, detected: response.detected });
         },
@@ -563,7 +564,7 @@
     const node = ensureNode(contentEl);
     node.dataset.dgxState = 'loading';
     node.className = 'dgx-tr dgx-tr--loading';
-    node.replaceChildren(document.createTextNode(t('stateTranslating', 'Traduciendo…')));
+    node.replaceChildren(document.createTextNode(t('stateTranslating', 'Translating…')));
   }
 
   function renderError(contentEl, message) {

@@ -64,7 +64,7 @@
     "message": "Translations removed."
   },
   "actionTranslateVisible": {
-    "message": "Traducir todos los mensajes visibles"
+    "message": "Translate all visible messages"
   },
   "footerReload": {
     "message": "If nothing changes, reload the Discord tab (F5)."
@@ -101,5 +101,8 @@
   },
   "errorEmptyResponse": {
     "message": "Google Translate returned an empty response."
+  },
+  "errorHttp": {
+    "message": "Google Translate returned an error."
   }
 }

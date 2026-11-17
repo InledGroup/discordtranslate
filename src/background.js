@@ -32,6 +32,11 @@ function i18n(key, fallback) {
   return message || fallback;
 }
 
+/** Mensaje localizado para un HTTP no-OK (el 429 se traduce en readableError). */
+function describeStatus(status) {
+  return `${i18n('errorHttp', 'Google Translate returned an error.')} (${status})`;
+}
+
 function readableError(error) {
   const text = String(error && error.message ? error.message : error);
   if (/429/.test(text)) {
@@ -142,7 +147,7 @@ async function requestGtx(text, targetLang) {
     `&q=${encodeURIComponent(text)}`;
 
   const response = await fetch(url, { credentials: 'omit', cache: 'no-store' });
-  if (!response.ok) throw new Error(`Google Translate respondió ${response.status}`);
+  if (!response.ok) throw new Error(describeStatus(response.status));
 
   const data = await response.json();
   const sentences = Array.isArray(data && data.sentences) ? data.sentences : [];
@@ -161,7 +166,7 @@ async function requestDictChromeEx(text, targetLang) {
     `&q=${encodeURIComponent(text)}`;
 
   const response = await fetch(url, { credentials: 'omit', cache: 'no-store' });
-  if (!response.ok) throw new Error(`Google Translate respondió ${response.status}`);
+  if (!response.ok) throw new Error(describeStatus(response.status));
 
   const data = await response.json();
   let translation = '';

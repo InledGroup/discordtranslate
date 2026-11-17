@@ -1,118 +1,141 @@
-# Discord Translate
+<p align="center">
+  <img src="icons/icon128.png" width="120" height="120" alt="Discord Translate icon" />
+</p>
 
-Extensión de Chrome (Manifest V3) que traduce mensajes de **Discord Web** usando
-**Google Translate sin API key**, sin cuenta y sin backend propio.
+<h1 align="center">Discord Translate</h1>
 
-- **Botón en el menú de clic derecho de Discord**: `Traducir mensaje`.
-- **Modo automático**: traduce los mensajes a medida que aparecen y el historial
-  cuando hacés scroll.
-- **Dos formas de mostrar el resultado**, configurables por separado para la
-  traducción automática y para la del menú: debajo del original (bilingüe) o
-  reemplazando el texto original.
-- **Sin API keys**: usa el endpoint público que consume translate.google.com.
-- **UI en el idioma del navegador**: los textos del popup y del menú usan
-  `chrome.i18n` (hoy español e inglés; el resto cae a inglés) y la lista de
-  idiomas se muestra con los nombres que el navegador usa para cada idioma.
+<p align="center">
+  Translate Discord messages in one right click — free, no API key, no account, no backend.
+</p>
 
-## Instalación (modo desarrollador)
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#usage">Usage</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#known-limits">Known limits</a>
+</p>
 
-1. Descargá o cloná esta carpeta.
-2. Abrí `chrome://extensions/` y activá **Modo de desarrollador**.
-3. **Cargar descomprimida** → elegí la carpeta del proyecto (donde está
-   `manifest.json`).
-4. Abrí o recargá `https://discord.com/app` (F5). Sin recargar, el content
-   script no está inyectado.
-5. Hacé clic en el icono de la extensión para configurar idioma, modo y
-   traducción automática. El popup tiene dos pestañas (**Automática** y
-   **Desde el menú**) y una sección final con las acciones masivas.
+---
 
-Funciona en `discord.com`, `ptb.discord.com` y `canary.discord.com`.
+## What it does
 
-## Uso
+- **“Translate message” in Discord’s own right-click menu.** Not the browser menu: the
+  real Discord context menu, styled like the rest of its items.
+- **Automatic mode** for messages that arrive while you read, and for the history
+  that loads as you scroll.
+- **Two ways to show the result, configured separately**: below the original
+  (bilingual) or replacing it. Automatic translations and menu translations each
+  keep their own preference, so flipping the automatic switch never changes how
+  your manual translations look.
+- **Bulk actions**: translate every visible message at once, or undo all
+  translations in the tab.
+- **No API keys**: it uses the same public Google Translate endpoint the
+  translate.google.com web app uses.
+- **Follows your browser language**: English by default, Spanish (Spain) when the
+  browser UI is Spanish. Language names in the picker come from `Intl.DisplayNames`.
 
-- **Manual**: clic derecho sobre cualquier mensaje → **Traducir mensaje**. La
-  traducción aparece con una etiqueta `🌐 ES` y una barra a la izquierda.
-- **Automático**: activá *Traducción automática* en el popup. Se traducen los
-  mensajes visibles al entrar al canal y los nuevos al llegar. Los mensajes que
-  ya están en el idioma destino no se duplican.
-- **Reemplazar el original**: el texto original se oculta y queda la traducción.
-  Pasando el mouse por encima se ve el original en el tooltip. Si abrís el editor
-  de un mensaje, el original se muestra de nuevo automáticamente.
-- **Traducir todos los mensajes visibles**: botón del popup para procesar el
-  canal actual de una vez, aunque el automático esté apagado.
-- **Deshacer traducciones**: quita todas las traducciones de la pestaña y deja
-  los mensajes como estaban. En modo automático, los mensajes que ya estaban en
-  pantalla no se vuelven a traducir hasta que cambies de canal o recargues; los
-  nuevos sí.
+## Install
 
-El popup separa los ajustes en dos pestañas: **Automática** (interruptor de
-traducción automática y cómo se muestran esas traducciones) y **Desde el menú**
-(cómo se muestran las que lanzás a mano). Cada una guarda su propio modo, así que
-activar o desactivar el automático no cambia el resultado del menú.
+The extension is not on the Chrome Web Store; it loads as an unpacked extension.
+It takes about a minute.
 
-Los ajustes se guardan en `chrome.storage.sync` y se aplican en caliente sobre la
-pestaña abierta (no hace falta recargar para cambiar idioma o modo).
+1. **Download the code.** Clone this repository or download it as a ZIP and unzip it
+   somewhere you will keep it.
+2. **Open the extensions page.** Go to `chrome://extensions/` in Chrome, Edge,
+   Brave, Vivaldi or any other Chromium browser.
+3. **Turn on Developer mode** (top-right toggle).
+4. **Click “Load unpacked”** and pick the folder that contains `manifest.json`
+   (the root of this project, not `src/`).
+5. **Reload Discord.** Open or refresh `https://discord.com/app` (F5). Content
+   scripts are only injected on load, so an already-open tab will not see the
+   extension until you refresh it.
+6. **Configure it** by clicking the extension icon: target language, automatic
+   translation, and how translations are displayed.
 
-## Cómo funciona
+Updates: after pulling new code, press the reload icon on the extension card in
+`chrome://extensions/` and refresh the Discord tab.
+
+Works on `discord.com`, `ptb.discord.com` and `canary.discord.com`.
+
+## Usage
+
+| Action | What happens |
+| --- | --- |
+| Right-click a message → **Translate message** | The translation appears under the original, or replaces it, depending on the *From the menu* settings. |
+| Toggle **Automatic translation** | Every new visible message is translated; older ones are translated as they scroll into view. Manual translations are never overwritten. |
+| **Translate all visible messages** (popup) | Translates the current channel once, even with automatic mode off. |
+| **Undo translations** (popup) | Removes every translation in the tab and restores the original text. Automatic mode will not immediately repaint the messages that were on screen; new messages still get translated. |
+
+In *replace* mode the original text is hidden and shown again as a tooltip on
+hover, or automatically while you edit a message.
+
+Settings live in `chrome.storage.sync` and are applied live to the open Discord
+tab: changing the language or the display mode does not require a reload.
+
+## How it works
 
 ```
-manifest.json          MV3, permisos mínimos (storage, activeTab)
-src/background.js      Service worker: única salida a la red (evita CORS)
-src/content.js         Menú contextual, extracción de texto, render, automático
-src/content.css        Estilos con variables de tema de Discord
-src/popup.html/.js/.css  Configuración
-_locales/en|es         Textos de la interfaz (chrome.i18n)
-icons/                 Iconos 16/48/128 (glifo Lucide "languages", MIT)
+manifest.json            MV3, minimal permissions (storage, activeTab)
+src/background.js        Service worker: the only network caller (avoids CORS)
+src/content.js           Context menu, text extraction, rendering, automatic mode
+src/content.css          Styles built on Discord’s own theme variables
+src/popup.html/.js/.css  Settings UI
+_locales/en|es           Interface strings (chrome.i18n)
+icons/                  16/48/128 icons (Lucide “languages” glyph, MIT)
 ```
 
-- **Menú contextual**: Discord dibuja sus propios menús en React, así que el
-  `contextMenus` del navegador no sirve. El content script escucha
-  `contextmenu` en fase de captura, recuerda el mensaje apuntado y espera a que
-  aparezca el `[role="menu"]` de Discord para insertar el ítem con el mismo
-  estilo. Al hacer clic se traduce y se cierra el menú con `Escape`.
-- **Traducción**: `GET https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=<idioma>&dt=t&dj=1&q=...`
-  (el endpoint público de la web de Translate). No requiere clave. Si falla por
-  límite de peticiones o bloqueo, se reintenta con
-  `clients5.google.com/translate_a/t?client=dict-chrome-ex` y de nuevo con el
-  principal.
-- **Textos largos**: se parten en trozos de ~1500 caracteres respetando párrafos
-  y frases, y se unen de nuevo (Google rechaza textos muy largos en ese
-  endpoint).
-- **Extracción**: se recorren los nodos de texto del contenido del mensaje, así
-  los emojis personalizados y los adjuntos no se envían, y los bloques de código
-  (`pre`/`code`) se ignoran en lugar de traducirse.
-- **Rendimiento**: caché en memoria por mensaje+texto, cola con máximo 2
-  peticiones concurrentes y 120 ms entre tandas. El modo automático traduce los
-  mensajes nuevos visibles al instante y usa `IntersectionObserver` solo para el
-  historial que aparece al hacer scroll (de ahí la inspiración en extensiones
-  existentes).
+- **Context menu.** Discord renders its menus in React, so `chrome.contextMenus`
+  is useless here. The content script listens for `contextmenu` in the capture
+  phase, remembers the message under the pointer and waits for Discord’s
+  `[role="menu"]` to appear; it then clones a real `[role="menuitem"]` so the item
+  inherits the hashed classes, icon slot and typography, and inserts it as the
+  first entry. Clicking it translates the message and closes the menu with
+  `Escape`.
+- **Translation.** `GET https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=<lang>&dt=t&dj=1&q=…`
+  — the public endpoint behind the Translate web app, no key required. If it
+  fails (rate limit or block), it retries with
+  `clients5.google.com/translate_a/t?client=dict-chrome-ex` and then the main one
+  again.
+- **Long messages** are split into ~1500-character chunks on paragraph and
+  sentence boundaries and joined back, because that endpoint rejects very long
+  input.
+- **Text extraction** walks the message’s text nodes, so custom emojis and
+  attachments are not sent, and `pre`/`code` blocks are skipped instead of being
+  mangled.
+- **Performance**: per-message in-memory cache, at most 2 concurrent requests
+  with a 120 ms gap between batches. New visible messages are translated
+  immediately; `IntersectionObserver` is only used for history that appears while
+  scrolling.
 
-## Inspiración
+## Built with AI, reviewed by a human
 
-Estas extensiones ya resuelven partes del problema y aportaron ideas:
+This project was written with AI coding agents and then reviewed, tested and
+corrected by a human. That is how Inled ships software: the agents do the typing,
+a person is accountable for the result. Bugs can still slip through — if you find
+one, please open an issue with the Discord tab’s console output.
+
+## Known limits
+
+- It depends on Google’s public endpoint: if Google changes or throttles it
+  (HTTP 429), wait a bit or rely less on automatic mode.
+- Discord DOM changes (`li[id^="chat-messages-"]`, `[role="menu"]`) require
+  selector updates in `src/content.js`.
+- It translates message text only — not the composer, embeds or attachments.
+- Replace mode hides the original with CSS; an edited message is re-translated
+  only when it is translated again.
+- For personal use: translations are requested from your browser, and nothing is
+  sent anywhere except Google Translate.
+
+## Inspiration
 
 - [HYAIPE/Auto-Translator-for-Discord](https://github.com/HYAIPE/Auto-Translator-for-Discord):
-  traducción en vivo, caché por mensaje y límite de concurrencia.
+  live translation, per-message cache and concurrency limits.
 - [yegetables/discord-translation-plugin](https://github.com/yegetables/discord-translation-plugin):
-  modos bilingüe / solo traducción, excluir bloques de código y Google gratis
-  como backend por defecto.
+  bilingual / translation-only modes, skipping code blocks, free Google backend.
 - [yuias/discord-message-translator](https://github.com/yuias/discord-message-translator):
-  `IntersectionObserver` para traducir solo lo visible y caché por ID de mensaje.
+  `IntersectionObserver` to translate only what is visible, cache by message ID.
 - [Free Discord Translator (VasylDev)](https://vasyldev.com/discord-translator/):
-  traducción debajo del mensaje y acceso al original al pasar el mouse.
+  translation below the message and original text on hover.
 
-Diferencias de esta implementación: menú contextual propio de Discord, sin
-build ni dependencias, sin API key y sin permisos sobre todas las webs.
-
-## Límites conocidos
-
-- Depende del endpoint público de Google Translate: si Google lo cambia o limita
-  el tráfico (HTTP 429), hay que esperar o usar menos mensajes automáticos.
-- Si Discord cambia el DOM (`li[id^="chat-messages-"]`, `[role="menu"]`), hay que
-  ajustar los selectores en `src/content.js`.
-- No traduce el cuadro de escritura ni los embeds/adjuntos, solo el texto del
-  mensaje.
-- El modo reemplazo oculta el original con CSS; un cambio de texto por edición se
-  refleja recién cuando el mensaje se vuelve a traducir.
-- Uso personal: la traducción se pide desde tu navegador, no se envía nada a
-  terceros más allá de Google Translate.
+What is different here: Discord’s own context menu, no build step and no
+dependencies, no API key, and no permission over every website.
