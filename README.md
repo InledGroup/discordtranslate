@@ -15,6 +15,10 @@
   <a href="#known-limits">Known limits</a>
 </p>
 
+<p align="center">
+  <a href="https://inled.es/apps/discord-translate">inled.es/apps/discord-translate</a>
+</p>
+
 ---
 
 ## What it does
@@ -39,8 +43,10 @@
 The extension is not on the Chrome Web Store; it loads as an unpacked extension.
 It takes about a minute.
 
-1. **Download the code.** Clone this repository or download it as a ZIP and unzip it
-   somewhere you will keep it.
+1. **Download the code.** Grab `discord-translate.zip` from the
+   [latest release](https://github.com/InledGroup/discordtranslate/releases/latest/download/discord-translate.zip)
+   and unzip it somewhere you'll keep it. Cloning the repository and using that
+   folder works too.
 2. **Open the extensions page.** Go to `chrome://extensions/` in Chrome, Edge,
    Brave, Vivaldi or any other Chromium browser.
 3. **Turn on Developer mode** (top-right toggle).
@@ -52,8 +58,14 @@ It takes about a minute.
 6. **Configure it** by clicking the extension icon: target language, automatic
    translation, and how translations are displayed.
 
-Updates: after pulling new code, press the reload icon on the extension card in
+Updates: after replacing the files, press the reload icon on the extension card in
 `chrome://extensions/` and refresh the Discord tab.
+
+New versions are packaged by the **Release extension** workflow in
+`.github/workflows/release.yml`, which you can run by hand from the Actions tab
+(it reads the version from `manifest.json`, or takes one as input) and which
+publishes `discord-translate.zip` on the matching tag. The download link above
+always points at the latest release.
 
 Works on `discord.com`, `ptb.discord.com` and `canary.discord.com`.
 

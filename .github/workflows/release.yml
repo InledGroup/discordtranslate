@@ -1,0 +1,72 @@
+name: Release extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to use manifest.json)'
+        required: false
+        type: string
+      prerelease:
+        description: 'Mark the release as a pre-release'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version and tag
+        id: meta
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          version="${INPUT_VERSION:-$(node -p "require('./manifest.json').version")}"
+          version="${version#v}"
+          if [ -z "$version" ]; then
+            echo "Could not resolve a version" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Package the extension
+        run: |
+          set -euo pipefail
+          rm -rf build
+          mkdir -p build/discord-translate
+          cp -R manifest.json src icons _locales README.md build/discord-translate/
+          (cd build && zip -qr discord-translate.zip discord-translate)
+          unzip -l build/discord-translate.zip | grep -q 'discord-translate/manifest.json'
+          unzip -l build/discord-translate.zip | grep -q 'discord-translate/src/content.js'
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.meta.outputs.tag }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          flags=()
+          if [ "$PRERELEASE" = "true" ]; then
+            flags+=(--prerelease)
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" build/discord-translate.zip --clobber
+            gh release edit "$TAG" --title "Discord Translate $VERSION" "${flags[@]}"
+          else
+            gh release create "$TAG" build/discord-translate.zip \
+              --title "Discord Translate $VERSION" \
+              --generate-notes \
+              "${flags[@]}"
+          fi
